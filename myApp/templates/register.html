@@ -1,0 +1,67 @@
+{% extends 'guest_base.html' %}
+
+{% block head %}
+<title>Register</title>
+<style type="text/css">
+	.maindiv{
+		width: 40%;
+		height: 500px;
+		margin: auto;
+		padding: 35px;
+		border-radius: 15px;
+
+	}
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="maindiv">
+	<legend>Sign Up</legend>
+	{% if errors == "1" %}
+	<div class="alert alert-warning" role="alert">
+	Usernames length cannot be under 2 characters.
+	</div>
+	{% elif errors == "2" %}
+	<div class="alert alert-warning" role="alert">
+	Username cannot contains spaces
+	</div>
+	{% elif errors == "3" %}
+	<div class="alert alert-warning" role="alert">
+	Passwords length cannot be under 2 characters.
+	</div>
+	{% elif errors == "4" %}
+	<div class="alert alert-warning" role="alert">
+	Password cannot contains spaces
+	</div>
+	{% elif errors == "5" %}
+	<div class="alert alert-warning" role="alert">
+	This username is already taken. Try another one.
+	</div>
+	{% elif errors == "6" %}
+	<div class="alert alert-warning" role="alert">
+	Passwords aren't match.
+	</div>
+	{% endif %}
+
+	<form method="POST" action="/register">
+		<div class="form-group">
+			<label for="exampleInputEmail1">Username</label>
+			<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="usernameHelp" placeholder="Enter username" name='username'>
+		</div>
+		<div class="form-group">
+			<label for="exampleInputPassword1">Password</label>
+			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name='password'>
+		</div>
+		<div class="form-group">
+			<label for="exampleInputPassword1">Confirm Password</label>
+			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name='password_confirm'>
+		</div>
+		<button type="submit" class="btn btn-secondary">Submit</button>
+		<br>
+		<h5><a href="/login">Already have an account? Log in</a></h5>
+	</form>
+</div>
+
+{% endblock %}

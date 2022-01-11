@@ -1,0 +1,79 @@
+{% extends 'user_base.html' %}
+
+{% block head %}
+<title>New Post</title>
+<style type="text/css">
+	.maindiv{
+		position: absolute;
+		width: 700px;
+		height: 500px;
+		z-index: 15;
+		top: 20%;
+		left: 40%;
+		margin: -100px 0 0 -150px;
+		background: white;	
+	}
+
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+
+<div class="maindiv">
+	<h1>New Post</h1>
+	<legend></legend>
+	<div class="errors">
+	{% if errors == "1" %}
+		<div class="alert alert-danger" role="alert">
+		Title length cannot be 0.
+		</div>
+	{% endif %}
+	{% if errors == "2" %}
+		<div class="alert alert-danger" role="alert">
+			Description length cannot be 0.
+		</div>
+	{% endif %}
+	{% if errors == "3" %}
+		<div class="alert alert-danger" role="alert">
+			Description length cannot be over 500 characters.
+		</div>
+	{% endif %}
+	{% if errors == "4" %}
+		<div class="alert alert-danger" role="alert">
+			Content length cannot be 0.
+		</div>
+	{% endif %}
+	</div>
+	<form method="POST" action="/newpost" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="formGroupExampleInput">Title</label>
+			<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Title" name="title" value="{{request.form['title']}}">
+
+		</div>
+		<div class="form-group">
+			<label for="formGroupExampleInput">Description</label>
+			<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" placeholder="Put some text here ... ">{{request.form['description']}}</textarea>
+
+		</div>
+		<legend></legend>
+		<div class="form-group">
+			<label for="formGroupExampleInput">Text</label>
+			<textarea class="form-control" id="formGroupExampleInput" rows="16" name="content" placeholder="Put some text here ... ">{{request.form['content']}}</textarea>
+
+			<br>
+			<label>Add an Picture (optional)</label>
+			<input type="file" id="upload-photo" name="image_file" accept="image/*" >
+
+		</div>
+			<button type="submit" class="btn btn-primary">Create</button>
+
+
+	</form>
+</div>
+</div>
+
+
+
+{% endblock %}

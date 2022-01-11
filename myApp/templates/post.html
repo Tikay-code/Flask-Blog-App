@@ -1,0 +1,164 @@
+{% if logged == True %}
+{% extends 'user_base.html' %}
+{% else %}
+{% extends 'guest_base.html' %}
+{% endif %}
+
+{% block head %}
+
+<title>{{post.title}}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+	.gotocenter{
+  		width: 40%;
+  		margin: auto;
+  		margin-top: 20px;
+  		clear: both;
+	}
+	.maindiv{
+  		width: 40%;
+  		margin: auto;
+  		margin-top: 20px;
+  		clear: both;
+
+	}
+	.darkcolor{
+		color: black;
+		text-align: center;
+	}
+	.link{
+		color: black;
+		text-decoration: underline;
+	}
+	.link:visited {color: #000000;}
+	.link:hover {color: #333333;}
+
+	.float-left-child {
+		display: inline-block;
+  		justify-content: flex-end;
+  		padding-top: 20px; /* need to handle the problem of the lines number */
+  		padding-right: 2px;
+}
+	.yikes{
+		clear: both;
+
+	}
+
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://rawgit.com/makeusabrew/bootbox/f3a04a57877cab071738de558581fbc91812dce9/bootbox.js"></script>
+
+
+<div class="maindiv">
+	<div>
+		<legend><h1 class="darkcolor">{{post.title}}</h1></legend>
+		<h4 class="darkcolor">by <a href="/user/{{post.author}}" class="link">{{post.author}}</a><small> at {{post.date_posted.date()}}</small></h4>
+		{% if post.post_image != None %}
+		<img src="../{{post.post_image}}" style="width: 45%;height: 45%;margin-left: auto;margin-right: auto;display: block;border-radius: 5px;" alt="{{post.title}}" title="{{post.title}}">
+		{% endif %}
+		<br>
+	</div>
+	<div>
+		<p class="darkcolor">{{post.text | safe}}</p>
+		{% if post.author == user %}
+
+		<a href="/update/{{post.post_id}}" class="float-left-child"><button class="btn btn-secondary">Update</button></a>
+		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletePost" data-backdrop="false">Delete</button>
+		<div class="modal fade" id="deletePost" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="deleteModalLabel">Delete Post?</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			    <div class="modal-body">
+			    	<h5>Are you sure you wanna delete this post?</h5>
+			    </div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<a href="/delete/{{post.post_id}}">
+						<input class="btn btn-danger" type="submit" value="Delete">
+					</a>
+				</div>
+
+			</div>
+			</div>
+		</div>
+		<legend></legend>
+		{% endif %}
+
+	</div>
+	<!-- comments section -->
+	<br>
+	<br>
+	<br>
+	<div class="comments">
+		<ul>
+			{% for comment in comments %}
+				<!-- need to do url for -->
+				<!--<img src="../static/users_pic/default.png" style="width: 5%;border-radius: 50%;">-->
+				<h4>
+					<u><a href="/user/{{comment.writer}}">{{comment.writer}}</a></u> <small>at {{comment.date_posted.date()}}</small>:
+				</h4>
+				<p>{{comment.text|safe}}</p>
+				{% if comment.writer == user %}
+				<a href="/post/{{post.post_id}}/delete/{{comment.comment_id}}">Delete</a>
+				<a href="/post/{{post.post_id}}/update/{{comment.comment_id}}#comment">Update</a>
+				<br>
+				{% elif post.author == user %}
+				<a href="/post/{{post.post_id}}/delete/{{comment.comment_id}}">Delete</a>
+				<br>
+				{% endif %}
+				<br>
+			{% endfor %}
+		</ul>
+	</div>
+	{% if errors == "1" %}
+	<div class="alert alert-warning" role="alert">
+  		Content length cannot be 0.
+	</div>
+	{% endif %}
+	{% if logged == True %}
+		<br>
+		<br>
+		<div class="mycomment">
+			{% if type == "update" %}
+			<form method="POST" action="/post/{{post.post_id}}/update/{{commentId.comment_id}}">
+			{% else %}
+			<form method="POST" action="/post/{{post.post_id}}">
+			{% endif %}
+			    <div class="form-group">
+			    <label id="comment">Your comment <small>as {{user}}</small></label>
+			    <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="awsometext" placeholder="{{commentContent}}"></textarea>
+			  </div>
+				<button type="submit" class="btn btn-secondary">
+				{% if type == "update" %}
+			  		Update
+				{% else %}
+			  		Submit
+				{% endif %}
+				</button>
+			</form>
+		</div>
+	{% endif %}
+</div>
+<br>
+<br>
+
+
+{% if type == "update" %}
+	<script type="text/javascript">
+		document.getElementById("exampleFormControlTextarea1").value = document.getElementById("exampleFormControlTextarea1").placeholder; 
+	</script>
+{% endif %}
+
+{% endblock %}

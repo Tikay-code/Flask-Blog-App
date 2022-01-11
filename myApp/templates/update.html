@@ -1,0 +1,89 @@
+{% extends 'user_base.html' %}
+
+
+{% block head %}
+<title>Update Post</title>
+<style type="text/css">
+	.maindiv{
+		position: absolute;
+		width: 700px;
+		height: 500px;
+		z-index: 15;
+		top: 20%;
+		left: 40%;
+		margin: -100px 0 0 -150px;
+		background: white;	
+}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="maindiv">
+	<h1>Update Post</h1>
+	<legend></legend>
+	<div class="errors">
+	{% if errors == "1" %}
+		<div class="alert alert-danger" role="alert">
+		Title length cannot be 0.
+		</div>
+	{% endif %}
+	{% if errors == "2" %}
+		<div class="alert alert-danger" role="alert">
+			Description length cannot be 0.
+		</div>
+	{% endif %}
+	{% if errors == "3" %}
+		<div class="alert alert-danger" role="alert">
+			Description length cannot be over 500 characters.
+		</div>
+	{% endif %}
+	{% if errors == "4" %}
+		<div class="alert alert-danger" role="alert">
+			Content length cannot be 0.
+		</div>
+	{% endif %}
+	</div>
+	<form method="POST" action="/update/{{id}}" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="formGroupExampleInput">Title</label>
+			{% if title != "" %}
+			<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Title" name="title", value="{{title}}">
+
+			{% else %}
+				<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Title" name="title", value="{{request.form['title']}}">
+			{% endif %}
+
+
+		</div>
+		<div class="form-group">
+			<label for="formGroupExampleInput2">Description</label>
+			{% if description != ""%}
+				<textarea class="form-control" id="mydescription" rows="3" name="description" placeholder="Put some text here .. ">{{description}}</textarea>
+			{% else %}
+				<textarea class="form-control" id="mydescription" rows="3" name="description" placeholder="Put some text here .. ">{{request.form['description']}}</textarea>
+			{% endif %}
+
+
+		</div>
+		<div class="form-group">
+			<label for="formGroupExampleInput2">Text</label>
+			{% if text != "" %}
+				<textarea class="form-control" id="exampleFormControlTextarea1" rows="16" name="content" placeholder="Write your content ... ">{{text}}</textarea>
+			{% else %}
+				<textarea class="form-control" id="exampleFormControlTextarea1" rows="16" name="content" placeholder="Write your content ... ">{{request.form['text']}}</textarea>
+			{% endif %}
+
+			<h5><b>Add or Update The Picture (optional)</b></h5>
+			{% if image != None %}
+				<img src="../{{image}}" style="width: 30%;">				
+			{% endif %}
+			<input type="file" id="upload-photo" name="image_file" accept="image/*" >
+
+		</div>
+			<button type="submit" class="btn btn-primary">Update</button>
+	</form>
+</div>
+
+
+{% endblock %}

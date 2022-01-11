@@ -1,0 +1,89 @@
+{% if logged == True %}
+{% extends 'user_base.html' %}
+{% else %}
+{% extends 'guest_base.html' %}
+{% endif %}
+{% block head %}
+
+<title>Profile | {{seeUser.username}}</title>
+
+<style>
+	.myimg{
+		width: 50%;
+		display: block;
+		border-radius: 50%;
+		margin-left: auto;
+		margin-right: auto;
+		/*border: 5px solid black;*/
+	}
+	.maindiv{
+		position: absolute;
+		width: 300px;
+		height: 200px;
+		z-index: 15;
+		top: 20%;
+		left: 25%;
+		margin: -100px 0 0 -150px;
+		background: white;	
+}
+	.awsomeFont{
+		font-family: 'Raleway', sans-serif;
+	}
+
+	.userposts{
+		top: 20%;
+		position: absolute;
+		width: 600px;
+		height: 200px;
+		z-index: 15;
+		top: 20%;
+		left: 50%;
+		margin: -100px 0 0 -150px;
+		background: white;	
+
+	}
+	.betterFont{
+		font-family: 'Quicksand', sans-serif;
+	}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet"> 
+<script src="https://rawgit.com/makeusabrew/bootbox/f3a04a57877cab071738de558581fbc91812dce9/bootbox.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Raleway:wght@300&display=swap" rel="stylesheet"> 
+{% endblock %}
+
+{% block body %}
+
+
+<div class="maindiv">
+	<h1 class="awsomeFont" align="center">Account Info</h1>
+	<legend></legend>
+	<br>
+	<img src="../static/users_pic/{{seeUser.image}}" class="myimg">
+	<br>
+	<div>
+		<h3 align="center" class="awsomeFont">Username: {{seeUser.username}}</h3>
+		<h3 align="center" class="awsomeFont">Posts number: {{postsNumber}}</h3>
+		<!--<h3 class="test" align="center">Posts number: </h3>-->
+		<br>
+		{% if current_user == seeUser.username %}
+			<h5 align="center"><a href="/account" class="btn btn-secondary" style="color: white;">Edit account</a></h5>
+		{% endif %}
+
+	</div>
+</div>
+
+<div class="userposts">
+	<h1 class="awsomeFont">Lastest Posts from {{seeUser.username}}</h1>
+	<legend></legend>
+	{% for post in posts %}
+		<h3 class="betterFont"><a href="/post/{{post.post_id}}">{{ post.title }}</a></h3>
+	{% endfor %}
+</div>
+{% endblock %}

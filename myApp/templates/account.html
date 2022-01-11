@@ -1,0 +1,111 @@
+{% extends 'user_base.html' %}
+
+{% block head %}
+<title>Account</title>
+<style type="text/css">
+	.myimg{
+		width: 50%;
+		display: block;
+		border-radius: 50%;
+		margin-left: auto;
+		margin-right: auto;
+		/*border: 5px solid black;*/
+	}
+	.maindiv{
+		position: absolute;
+		width: 300px;
+		height: 200px;
+		z-index: 15;
+		top: 20%;
+		left: 50%;
+		margin: -100px 0 0 -150px;
+		background: white;	
+}
+	.awsomeFont{
+		font-family: 'Raleway', sans-serif;
+	}
+	.dreamout{
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+
+	}
+
+	#upload-photo {
+	   opacity: 0;
+	   position: absolute;
+	   z-index: -1;
+	}
+
+	#mylabel {
+   		cursor: pointer;
+   		display: block;
+	    text-align: center;
+	    line-height: 150%;
+	    font-size: 1.15em;
+	}
+	#dontbelazy{
+   		display: block;
+	    text-align: center;
+	    line-height: 150%;
+	    font-size: 1.15em;
+	}
+   /* Style as you please, it will become the visible UI component. */
+}
+
+
+
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet"> 
+{% endblock %}
+
+{% block body %}
+
+
+<div class="maindiv">
+	<h1 class="awsomeFont" align="center">Account Info</h1>
+	{% if errors == "1" %}
+	<legend></legend>
+	<div class="alert alert-info" role="alert">
+	  This username is already taken. Try another one.
+	</div>
+	{% elif success == "1" %}
+	<div class="alert alert-success" role="alert">
+	  Your username has been updated.
+	</div>
+	{% elif errors == "2" %}
+	<div class="alert alert-danger" role="alert">
+	  Usernames length cannot be under 2 letters.
+	</div>
+	{% elif errors == "3" %}
+	<div class="alert alert-danger" role="alert">
+	  Username cannot contains spaces.
+	</div>
+	{% endif %}
+	<legend></legend>
+	<br>
+	<img src="{{image_path}}" class="myimg">
+	<form method="POST" action="/upload" enctype="multipart/form-data">
+		<label id="mylabel"  for="upload-photo" class="awsomeLabel dreamout" >Upload an Avatar</label>
+		<input type="file" id="upload-photo" name="image_file" accept="image/*" class="dreamout">
+		<input type="submit" value="Submit" class="btn btn-secondary dreamout">
+	</form>
+	<br>
+	<legend></legend>
+	<div>
+		<label id="dontbelazy">Username: {{user}}</label>
+		<form method="POST", action="/account" class="form-inline">
+			<div class="form-group mb-2">
+				<input type="text" name="username", value="{{user}}" class="form-control">
+				<input type="submit" value="Submit" class="btn btn-secondary">
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+{% endblock %}
